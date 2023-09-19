@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Log;
+use App\Models\User;
 use App\Models\ProjectUser;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('index');
     }
 
     public function projects_users(){
@@ -43,5 +44,15 @@ class HomeController extends Controller
         $logs = Log::all();
 
         return view('logs', compact('logs'));
+    }
+
+    public function test(){
+
+        $test = [];
+        for($i=0; $i < 35; $i++) { 
+            $test[] = fake()->unique()->colorName();
+        }
+
+        return $test;
     }
 }

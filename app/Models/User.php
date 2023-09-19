@@ -56,4 +56,8 @@ class User extends Authenticatable
         return $this->hasMany(ProjectUser::class);
     }
 
+    public function hasRole($roleName){
+        return $this->role()->whereName($roleName)->exists();
+    }
+
 }
