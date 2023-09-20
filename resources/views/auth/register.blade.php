@@ -1,6 +1,6 @@
-@extends('layouts.user')
+{{-- @extends('layouts.user') --}}
 
-
+<x-main-master>
 @section('content')
     <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5">
@@ -11,7 +11,7 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create A User!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Create A New User!</h1>
                             </div>
                             <form method="POST" action="{{ route('register') }}" class="user">
                                 @csrf
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            {{ __('Register') }}
+                                            {{ __('Create') }}
                                         </button>
                                     </div>
                                 </div>
@@ -74,6 +74,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 @endsection
+</x-main-master>

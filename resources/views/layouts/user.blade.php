@@ -24,34 +24,6 @@
 
 <body class="bg-gradient-primary">
 
-    @if (session('success'))
-        <div class="toast success-toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"
-            data-delay="5000">
-            <div class="toast-header">
-                <strong class="mr-auto"><i class="fa-solid fa-check fa-beat"></i> Success</strong>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                {{ session('success') }}
-            </div>
-        </div>
-    @elseif (session('error'))
-        <div class="toast error-toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"
-            data-delay="5000">
-            <div class="toast-header">
-                <strong class="mr-auto"><i class="fa-solid fa-exclamation fa-beat"></i> Error</strong>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                {{ session('error') }}
-            </div>
-        </div>
-    @endif
-
     @yield('content')
 
     <!-- Bootstrap core JavaScript-->

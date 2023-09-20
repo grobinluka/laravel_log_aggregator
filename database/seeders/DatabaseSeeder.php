@@ -52,6 +52,15 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        if(!User::whereEmail('test@gmail.com')->first()){
+            User::create([
+                'name' => 'Test Test',
+                'email' => 'test@gmail.com',
+                'password' => '$2y$10$uyZo6QNstLlQeDJ.S2oEuue/eYSI8Wr/SE2DeQoNgudvJNhRCm7O6',
+                'role_id' => 2
+            ]);
+        }
+
         
         //User SEED - role: employee
         User::factory(10)->state(new Sequence(
@@ -69,7 +78,7 @@ class DatabaseSeeder extends Seeder
 
 
         //Project SEED
-        Project::factory(25)->create();
+        Project::factory(10)->create();
 
         
         // for($i = 0; $i < 35; $i++){
@@ -94,9 +103,9 @@ class DatabaseSeeder extends Seeder
         // }
 
         //Assign Users to Projects
-        ProjectUser::factory(20)->create();
+        // ProjectUser::factory(20)->create();
 
 
-        Log::factory(10)->create();
+        // Log::factory(10)->create();
     }
 }

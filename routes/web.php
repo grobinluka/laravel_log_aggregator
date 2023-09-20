@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\LogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +27,19 @@ Route::get('/home', function(){
 });
 
 
-Route::get('/projects/users', [HomeController::class, 'projects_users'])->name('projects_users');
+//USER STUFF
+Route::middleware(['admin.role'])->group(function(){
+    Route::get('/register', function(){
+        return view('auth.register');
+    })->name('register');
 
-Route::get('/test', [HomeController::class, 'test'])->name('test');
 
-Route::get('/logs', [HomeController::class, 'logs'])->name('logs');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-// Route::get('/users/create', [UserController::class, 'create'])->name('users.create_user');
+    Route::get('/users/{id}/projects/', [UserController::class, 'users_projects'])->name('users.projects');
+
+    Route::post('/users/{user_id}/projects/{project_id}/assign', [UserController::class, 'users_projects_assign'])->name('users.projects.assign');
+
+    Route::delete('/users/{user_id}/projects/{project_id}/unassign', [UserController::class, 'users_projects_unassign'])->name('users.projects.unassign');
+
+});
