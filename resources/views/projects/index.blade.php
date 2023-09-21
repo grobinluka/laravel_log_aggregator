@@ -6,31 +6,23 @@
 
     @section('content')
         <div class="container mb-5">
-            <h1>All Users</h1>
+            <h3>All Projects</h3>
             <hr>
             <table id="example" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Email Verified</th>
-                        <th>Role</th>
+                        <th>Title</th>
+                        <th>Slug</th>
+                        <th>Description</th>
                         <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $user)
+                    @foreach ($projects as $project)
                         <tr>
-                            <td>{{$user->name}}</td>
-                            <td>{{$user->email}}</td>
-                            <td>
-                                @if ($user->email_verified_at)
-                                    {{ $user->email_verified_at->diffForHumans() }}
-                                @else
-                                    Not Verified
-                                @endif
-                            </td>
-                            <td>{{$user->role->name}}</td>
+                            <td>{{$project->title}}</td>
+                            <td>{{$project->slug}}</td>
+                            <td>{{substr($project->description, 0, 100)}}</td>
                             <td></td>
                         </tr>
                     @endforeach

@@ -8,7 +8,7 @@
     <meta name="description" content="SysLog AGGREGATOR">
     <meta name="author" content="Luka Grobin">
 
-    <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico')}}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <title>SysLog</title>
 
@@ -27,6 +27,11 @@
     {{-- JQuery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    {{-- DataTables CSS --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/fh-3.4.0/r-2.5.0/sb-1.5.0/sp-2.2.0/datatables.min.css"
+        rel="stylesheet">
 
     @yield('css')
 
@@ -41,9 +46,9 @@
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <img src="{{asset('syslog_logo.png')}}" alt="syslog_logo.png" width="30">
+                    <img src="{{ asset('syslog_logo.png') }}" alt="syslog_logo.png" width="30">
                 </div>
                 <div class="sidebar-brand-text mx-3 size-3 display-6">SysLog</div>
             </a>
@@ -53,7 +58,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{ route('home') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -67,7 +72,46 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            {{-- <li class="nav-item">
+            @if (auth()->user()->hasRole('admin'))
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
+                        aria-expanded="true" aria-controls="collapseUsers">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                    <div id="collapseUsers" class="collapse" aria-labelledby="headingPages"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">User Options:</h6>
+                            <a class="collapse-item" href="{{ route('users.index') }}">All Users</a>
+                            <a class="collapse-item" href="{{ route('users.create') }}">Create New User</a>
+                        </div>
+                    </div>
+                </li>
+            @endif
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProjects"
+                    aria-expanded="true" aria-controls="collapseProjects">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <div id="collapseProjects" class="collapse" aria-labelledby="headingPages"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Project Options:</h6>
+                        @if (auth()->user()->hasRole('admin'))
+                            <a class="collapse-item" href="{{ route('projects.index') }}">All Projects</a>
+                        @endif
+                        <a class="collapse-item" href="{{ route('users.myprojects') }}">My Projects</a>
+                        @if (auth()->user()->hasRole('admin'))
+                            <a class="collapse-item" href="{{ route('projects.create') }}">Create New Project</a>
+                        @endif
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLogs"
                     aria-expanded="true" aria-controls="collapseLogs">
                     <i class="fas fa-file-medical-alt"></i>
@@ -76,44 +120,13 @@
                 <div id="collapseLogs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Logs Options:</h6>
-                        <a class="collapse-item" href="{{ route('register') }}">My Reports</a>
-                        @if(auth()->user()->hasRole('admin'))
-                            <a class="collapse-item" href="{{ route('register') }}">All Reports</a>
+                        @if (auth()->user()->hasRole('admin'))
+                            <a class="collapse-item" href="{{ route('log.index') }}">All Logs</a>
                         @endif
+                        <a class="collapse-item" href="{{ route('log.mylogs') }}">My Logs</a>
                     </div>
                 </div>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProjects"
-                    aria-expanded="true" aria-controls="collapseProjects">
-                    <i class="fas fa-project-diagram"></i>
-                    <span>Projects</span>
-                </a>
-                <div id="collapseProjects" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Project Options:</h6>
-                        <a class="collapse-item" href="{{ route('projects.index') }}">My Projects</a>
-                    </div>
-                </div>
-            </li> --}}
-
-            @if(auth()->user()->hasRole('admin'))
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
-                        aria-expanded="true" aria-controls="collapseUsers">
-                        <i class="fas fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                    <div id="collapseUsers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">User Options:</h6>
-                            <a class="collapse-item" href="{{ route('users.index') }}">View All</a>
-                            <a class="collapse-item" href="{{ route('register') }}">Create New User</a>
-                        </div>
-                    </div>
-                </li>
-            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -172,12 +185,11 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600">{{ auth()->user()->name }}</span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                     data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -192,10 +204,12 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    @yield('content')
-
+                <div class="container container-fluid mt-5 mb-5">
+                    <div class="card">
+                        <div class="card-body">
+                            @yield('content')
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -265,6 +279,14 @@
 
     <!-- Page level custom scripts -->
     @vite(['resources/js/demo/chart-area-demo.js', 'resources/js/demo/chart-pie-demo.js'])
+
+    {{-- DataTables JS --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script
+        src="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/fh-3.4.0/r-2.5.0/sb-1.5.0/sp-2.2.0/datatables.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 
     @yield('js')
 

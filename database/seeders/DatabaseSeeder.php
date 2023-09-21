@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
+use Illuminate\Support\Str;
 use App\Models\SeverityLevel;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -32,7 +33,7 @@ class DatabaseSeeder extends Seeder
         }
 
         //Default Severity Levels seed
-        $levels = ['Notice', 'Warning', 'Error', 'Critical', 'Emergency'];
+        $levels = ['Debug', 'Informational', 'Notice', 'Warning', 'Error', 'Critical', 'Alert', 'Emergency'];
 
         foreach ($levels as $level){
             if(!SeverityLevel::whereLevel($level)->first()){
@@ -43,12 +44,25 @@ class DatabaseSeeder extends Seeder
         }
 
 
+        if(!User::whereEmail('admin@gmail.com')->first()){
+            User::create([
+                'name' => 'Administrator',
+                'email' => 'admin@gmail.com',
+                'email_verified_at' => now(),
+                'password' => '$2y$10$uyZo6QNstLlQeDJ.S2oEuue/eYSI8Wr/SE2DeQoNgudvJNhRCm7O6',
+                'role_id' => 1,
+                'remember_token' => Str::random(10),
+            ]);
+        }
+
         if(!User::whereEmail('grobinluka@gmail.com')->first()){
             User::create([
                 'name' => 'Luka Grobin',
                 'email' => 'grobinluka@gmail.com',
+                'email_verified_at' => now(),
                 'password' => '$2y$10$uyZo6QNstLlQeDJ.S2oEuue/eYSI8Wr/SE2DeQoNgudvJNhRCm7O6',
-                'role_id' => 1
+                'role_id' => 2,
+                'remember_token' => Str::random(10),
             ]);
         }
 
@@ -56,8 +70,10 @@ class DatabaseSeeder extends Seeder
             User::create([
                 'name' => 'Test Test',
                 'email' => 'test@gmail.com',
+                'email_verified_at' => now(),
                 'password' => '$2y$10$uyZo6QNstLlQeDJ.S2oEuue/eYSI8Wr/SE2DeQoNgudvJNhRCm7O6',
-                'role_id' => 2
+                'role_id' => 2,
+                'remember_token' => Str::random(10),
             ]);
         }
 
@@ -69,43 +85,16 @@ class DatabaseSeeder extends Seeder
                 ],
             ))->create();
 
-        //User SEED - role: admin
-        User::factory(1)->state(new Sequence(
-                fn(Sequence $sequence) => [
-                    'role_id' => Role::whereName('admin')->first()->id
-                ],
-            ))->create();
+        // //User SEED - role: admin
+        // User::factory(1)->state(new Sequence(
+        //         fn(Sequence $sequence) => [
+        //             'role_id' => Role::whereName('admin')->first()->id
+        //         ],
+        //     ))->create();
 
 
         //Project SEED
-        Project::factory(10)->create();
+        Project::factory(20)->create();
 
-        
-        // for($i = 0; $i < 35; $i++){
-
-        //     $title = fake()->sentence(3, true);
-        //     $slug = fake()->colorName;
-
-        //     while(Project::whereTitle($title)->exists()){
-        //         $title = fake()->sentence(3, true);
-        //     }
-
-        //     while(Project::whereSlug($slug)->exists()){
-        //         $slug = fake()->colorName;
-        //     }
-
-        //     Project::factory()->state(new Sequence(
-        //         fn(Sequence $sequence) => [
-        //             'title' => $title,
-        //             'slug' => $slug,
-        //         ],
-        //     ))->create();
-        // }
-
-        //Assign Users to Projects
-        // ProjectUser::factory(20)->create();
-
-
-        // Log::factory(10)->create();
     }
 }
