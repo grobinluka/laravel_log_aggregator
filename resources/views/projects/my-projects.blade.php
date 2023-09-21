@@ -21,6 +21,9 @@
                         <td>{{ substr($project->description, 0, 100) }}</td>
                         <td>
                             <a href="{{ route('log.create', $project->id) }}">Log a Report</a>
+                            <br>
+                            <hr>
+                            <a href="{{ route('projects.show', $project->id) }}">Stats</a>
                         </td>
                     </tr>
                 @endforeach

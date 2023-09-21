@@ -8,7 +8,6 @@
                 <tr>
                     <th>Title</th>
                     <th>Slug</th>
-                    <th>Name</th>
                     <th>Description</th>
                     <th>Options</th>
                 </tr>
@@ -18,7 +17,6 @@
                     <tr>
                         <td>{{ $project->title }}</td>
                         <td>{{ $project->slug }}</td>
-                        <td>{{ $user->name }}</td>
                         <td>{{ substr($project->description, 0, 100) }}</td>
                         <td>
                             @if (!$userController->checkUserProject($user->id, $project->id))

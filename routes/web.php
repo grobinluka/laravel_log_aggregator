@@ -5,6 +5,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Models\Project;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,7 @@ Route::middleware(['admin.role'])->group(function(){
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
 
     //Store project
-    Route::post('/project/store', [ProjectController::class, 'store'])->name('projects.store');
+    Route::post('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
 
 
     //List of all the logs
@@ -69,9 +70,10 @@ Route::middleware(['admin.role'])->group(function(){
 
 });
 
+Route::get('/projects/{id}/', [ProjectController::class, 'show'])->name('projects.show');
 
-//Users Items -self explanatory
-Route::get('/my-projects', [UserController::class, 'my_projects'])->name('users.myprojects');
+//Users Items - self explanatory
+Route::get('/my-projects', [ProjectController::class, 'my_projects'])->name('projects.myprojects');
 
 Route::get('/my-logs', [LogController::class, 'show'])->name('log.mylogs');
 

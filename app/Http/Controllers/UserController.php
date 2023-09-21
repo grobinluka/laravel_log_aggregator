@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Project;
@@ -122,7 +123,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required', 'string', 'max:255',
             'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
-            'password' => 'required', 'string', 'min:8', 'confirmed',
+            // 'password' => 'required', 'string', 'min:8', 'confirmed',
             'role_id' => 'required',
         ]);
 
@@ -150,18 +151,5 @@ class UserController extends Controller
 
     public function checkUserProject($user_id, $project_id){
         return ProjectUser::where('user_id', '=', $user_id)->where('project_id', '=', $project_id)->exists();
-    }
-
-
-    public function my_projects(){
-        if($user = User::find(auth()->user()->id)){
-            $projectsUser = ProjectUser::whereUserId($user->id)->get();
-            
-            $projectIds = $projectsUser->pluck('project_id')->toArray();
-                
-            $projects = Project::whereIn('id', $projectIds)->get();
-
-            return view('users.my-projects', compact('user','projects'));
-        }
     }
 }

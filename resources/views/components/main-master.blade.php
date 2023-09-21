@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="SysLog AGGREGATOR">
+    <meta name="description" content="SysLog">
     <meta name="author" content="Luka Grobin">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
@@ -32,6 +32,13 @@
     <link
         href="https://cdn.datatables.net/v/bs4-4.6.0/jq-3.7.0/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/fh-3.4.0/r-2.5.0/sb-1.5.0/sp-2.2.0/datatables.min.css"
         rel="stylesheet">
+
+
+        <script>
+            document.getElementById('mySelect').onchange = function() {
+                document.getElementById('myForm').submit();
+            };
+        </script>
 
     @yield('css')
 
@@ -103,7 +110,7 @@
                         @if (auth()->user()->hasRole('admin'))
                             <a class="collapse-item" href="{{ route('projects.index') }}">All Projects</a>
                         @endif
-                        <a class="collapse-item" href="{{ route('users.myprojects') }}">My Projects</a>
+                        <a class="collapse-item" href="{{ route('projects.myprojects') }}">My Projects</a>
                         @if (auth()->user()->hasRole('admin'))
                             <a class="collapse-item" href="{{ route('projects.create') }}">Create New Project</a>
                         @endif
@@ -220,7 +227,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; SysLog | Luka Grobin | 2023</span>
                     </div>
                 </div>
             </footer>

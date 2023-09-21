@@ -96,5 +96,10 @@ class DatabaseSeeder extends Seeder
         //Project SEED
         Project::factory(20)->create();
 
+
+        ProjectUser::factory(50)->create();
+
+        Log::factory(50)->create();
+
     }
 }
