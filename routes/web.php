@@ -5,7 +5,6 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
-use App\Models\Project;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +17,11 @@ use App\Models\Project;
 |
 */
 
+//AUTH ROUTES
 Auth::routes();
 
+//HOME (index)
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::get('/home', function(){
-    return view('home');
-});
-
 
 //Only admin can visit this routes
 Route::middleware(['admin.role'])->group(function(){
@@ -49,7 +45,7 @@ Route::middleware(['admin.role'])->group(function(){
     //List of all available projects - here is the option to assign/unassign user from a project
     Route::get('/users/{id}/projects/', [UserController::class, 'users_projects'])->name('users.projects');
 
-    //Assign-Unassign user from project - POST/DELET
+    //Assign-Unassign user from project - POST/DELETE
     Route::post('/users/{user_id}/projects/{project_id}/assign', [UserController::class, 'users_projects_assign'])->name('users.projects.assign');
 
     Route::delete('/users/{user_id}/projects/{project_id}/unassign', [UserController::class, 'users_projects_unassign'])->name('users.projects.unassign');
@@ -70,16 +66,17 @@ Route::middleware(['admin.role'])->group(function(){
 
 });
 
-Route::get('/projects/{id}/', [ProjectController::class, 'show'])->name('projects.show');
+    //Project Statistics
+    Route::get('/projects/{id}/', [ProjectController::class, 'show'])->name('projects.show');
 
-//Users Items - self explanatory
-Route::get('/my-projects', [ProjectController::class, 'my_projects'])->name('projects.myprojects');
+    //Users Projects and Logs - self explanatory
+    Route::get('/my-projects', [ProjectController::class, 'my_projects'])->name('projects.myprojects');
 
-Route::get('/my-logs', [LogController::class, 'show'])->name('log.mylogs');
+    Route::get('/my-logs', [LogController::class, 'show'])->name('log.mylogs');
 
 
-//Create a Log Form
-Route::get('/log/project/{id}', [LogController::class, 'create'])->name('log.create');
+    //Create a Log Page
+    Route::get('/log/project/{id}', [LogController::class, 'create'])->name('log.create');
 
-Route::post('/log/project/{id}/store', [LogController::class, 'store'])->name('log.store');
+    Route::post('/log/project/{id}/store', [LogController::class, 'store'])->name('log.store');
 

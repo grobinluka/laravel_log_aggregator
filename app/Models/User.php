@@ -44,10 +44,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-
-    /**
-     * A has One Role model.
-    */
     public function role(){
         return $this->belongsTo(Role::class);
     }

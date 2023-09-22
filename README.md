@@ -1,4 +1,4 @@
-<p align="center"><img src="public/syslog_logo.png" width="400" alt="Syslogo"> Syslog </p>
+<h3 align="center"><img src="public/syslog_logo.png" width="150" alt="Syslogo"> SysLog Laravel</h3>
 
 # Getting Started
 To get your Laravel project up and running after cloning it from a Git repository, follow these steps:
@@ -109,5 +109,6 @@ Please be aware that the specific steps may differ based on your project and its
 ## Special Thanks To
 
 <a href="https://www.flaticon.com/free-icons/geometrical" title="geometrical icons">Logo Icon - created by Freepik - Flaticon</a>
+<br>
 <a href="https://startbootstrap.com/theme/sb-admin-2" title="sb_admin_2">SB Admin 2 Theme</a>
-<p align="center"><img src="public/syslog_logo.png" width="200" alt="Syslogo"> Syslog <a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo"></a></p>
+<p align="center"><img src="public/syslog_logo.png" width="100" alt="Syslogo"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="300" alt="Laravel Logo"></a></p>

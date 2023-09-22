@@ -94,14 +94,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -141,14 +133,8 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Check if user is assigned to a project
      */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-
     public function checkUserProject($user_id, $project_id){
         return ProjectUser::where('user_id', '=', $user_id)->where('project_id', '=', $project_id)->exists();
     }
