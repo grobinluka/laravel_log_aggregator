@@ -1,9 +1,9 @@
 <h3 align="center"><img src="public/syslog_logo.png" width="150" alt="Syslogo"></h3>
 
-# Getting Started
+## Getting Started
 To get your Laravel project up and running after cloning it from a Git repository, follow these steps:
 
-# Requirements
+## Requirements
 - Git Bash
 - Composer
 - NodeJS
@@ -104,6 +104,13 @@ To view your running Laravel application, open your web browser and go to the UR
 
 Please be aware that the specific steps may differ based on your project and its unique dependencies. Always refer to the project's documentation or README file for any additional instructions or specific configuration details.
 
+You can access the Application Administrator account with the following credentials:
+
+```bash
+Email: admin@gmail.com
+Password: 123123123
+```
+After logging in as the administrator, please create a new standard user account and then proceed to test the application using that newly created account.
 
 
 ## Special Thanks To
