@@ -1,4 +1,4 @@
-<h3 align="center"><img src="public/syslog_logo.png" width="150" alt="Syslogo"> SysLog Laravel</h3>
+<h3 align="center"><img src="public/syslog_logo.png" width="150" alt="Syslogo"></h3>
 
 # Getting Started
 To get your Laravel project up and running after cloning it from a Git repository, follow these steps:
