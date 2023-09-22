@@ -68,7 +68,7 @@ mysql -u root -p
 create database laravel_logs;
 ```
 
-Configure the database connection settings in the `.env` file. Then, run the migrations to create the database schema and the seeds:
+Configure the database connection settings in the `.env` file. Then, run the migrations to create the database schema and the seeds (this will generate fake data):
 
 ```bash
 php artisan migrate --seed
