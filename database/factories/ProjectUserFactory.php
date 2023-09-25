@@ -22,7 +22,15 @@ class ProjectUserFactory extends Factory
         $project_id = Project::inRandomOrder()->first()->id;
         $user_id = User::inRandomOrder()->first()->id;
 
-        while(ProjectUser::whereIn('project_id', [$project_id])->whereIn('user_id', [$user_id])->exists()){
+        $projectUser = ProjectUser::whereIn('project_id', [$project_id])
+                ->whereIn('user_id', [$user_id])
+                ->exists();
+
+        while($projectUser){
+            $projectUser = ProjectUser::whereIn('project_id', [$project_id])
+                ->whereIn('user_id', [$user_id])
+                ->exists();
+
             $project_id = Project::inRandomOrder()->first()->id;
             $user_id = User::inRandomOrder()->first()->id;
         }

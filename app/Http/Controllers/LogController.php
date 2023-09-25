@@ -26,7 +26,9 @@ class LogController extends Controller
      */
     public function create($project_id)
     {
-        if($project = Project::find($project_id)){
+        $project = Project::find($project_id);
+
+        if($project){
             $projectUser = ProjectUser::whereProjectId($project_id)->get();
 
             $check = false;
@@ -38,7 +40,9 @@ class LogController extends Controller
             }
 
             if($check){
-                if($severitylevels = SeverityLevel::all()){
+                $severitylevels = SeverityLevel::all();
+
+                if($severitylevels){
                     return view('logs.create', compact('project', 'severitylevels'));
                 }
             }
@@ -57,13 +61,19 @@ class LogController extends Controller
             'description' => 'required|max:1000',
         ]);
 
-        if((Project::find($project_id)) && ($request) && ($user_id = User::find(auth()->user()->id)->id)){
-            if($projectuser_id = ProjectUser::whereProjectId($project_id)->whereUserId($user_id)->first()->id){
+        $user_id = User::find(auth()->user()->id)->id;
+        $project = Project::find($project_id);
+
+        if(($project) && ($request) && ($user_id)){
+            $projectuser_id = ProjectUser::whereProjectId($project_id)
+                ->whereUserId($user_id)->first()->id;
+
+            if($projectuser_id){
                 $log = $request->all();
 
                 $severitylevel = SeverityLevel::find($log['severitylevel']);
 
-                if($severitylevel = SeverityLevel::find($log['severitylevel'])){
+                if($severitylevel){
                     Log::create([
                         'project_user_id' => $projectuser_id,
                         'severity_level_id' => $severitylevel->id,
@@ -82,7 +92,9 @@ class LogController extends Controller
      */
     public function show()
     {
-        $projectuser = ProjectUser::whereUserId(auth()->user()->id)->with('user', 'project','logs.severityLevel')->get();
+        $projectuser = ProjectUser::whereUserId(auth()->user()->id)
+            ->with('user', 'project','logs.severityLevel')
+            ->get();
 
         return view('logs.my-logs', compact('projectuser'));
     }

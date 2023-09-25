@@ -23,9 +23,13 @@ class UserController extends Controller
     }
 
 
-    public function users_projects($id){
-        if($user = User::find($id)){
-            if($projects = Project::all()){
+    public function usersProjects($id){
+        $user = User::find($id);
+
+        if($user){
+            $projects = Project::all();
+
+            if($projects){
                 return view('users.project-user', compact('user', 'projects'));
             }
         }
@@ -34,8 +38,11 @@ class UserController extends Controller
     }
 
 
-    public function users_projects_assign($user_id, $project_id){
-        if((User::find($user_id)) && (Project::find($project_id))){
+    public function usersProjectsAssign($user_id, $project_id){
+        $user = User::find($user_id);
+        $project = Project::find($project_id);
+
+        if(($user) && ($project)){
             if(!$this->checkUserProject($user_id, $project_id)){
                 ProjectUser::create([
                     'project_id' => $project_id,
@@ -47,8 +54,11 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function users_projects_unassign($user_id, $project_id){
-        if((User::find($user_id)) && (Project::find($project_id))){
+    public function usersProjectsUnassign($user_id, $project_id){
+        $user = User::find($user_id);
+        $project = Project::find($project_id);
+
+        if(($user) && ($project)){
             if($this->checkUserProject($user_id, $project_id)){
                 ProjectUser::where([
                     'project_id' => $project_id,
@@ -79,7 +89,11 @@ class UserController extends Controller
             'password' => 'required', 'string', 'min:8', 'confirmed',
         ]);
 
-        if($user = $request->all()){
+        $user = $request->all();
+
+        $userCheck = User::whereEmail($user['email'])->first();
+
+        if(!$userCheck){
             User::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
@@ -98,7 +112,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        if($user = User::find($id)){
+        $user = User::find($id);
+
+        if($user){
             $roles = Role::all();
         
             return view('users.edit', compact('user', 'roles'));
@@ -115,11 +131,12 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required', 'string', 'max:255',
             'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
-            // 'password' => 'required', 'string', 'min:8', 'confirmed',
             'role_id' => 'required',
         ]);
 
-        if($user = User::find($id)){
+        $user = User::find($id);
+
+        if($user){
 
             $user->update($request->all());
 
@@ -136,6 +153,10 @@ class UserController extends Controller
      * Check if user is assigned to a project
      */
     public function checkUserProject($user_id, $project_id){
-        return ProjectUser::where('user_id', '=', $user_id)->where('project_id', '=', $project_id)->exists();
+
+        return ProjectUser::where('user_id', '=', $user_id)
+            ->where('project_id', '=', $project_id)
+            ->exists();
+
     }
 }

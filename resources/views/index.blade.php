@@ -6,6 +6,7 @@
             <h1 class="h3 mb-0">Dashboard</h1>
         </div>
 
+        
         <!-- Content Row -->
         <div class="row">
             @foreach ($projects as $p)

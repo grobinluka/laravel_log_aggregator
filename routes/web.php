@@ -31,52 +31,68 @@ Route::middleware(['admin.role'])->group(function(){
     Route::get('/register', function(){return redirect()->route('users.create');});
 
     //Store User
-    Route::post('/users/create/store', [UserController::class, 'store'])->name('users.store');
+    Route::post('/users/create/store', [UserController::class, 'store'])
+            ->name('users.store');
 
     //List of all the users
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users', [UserController::class, 'index'])
+            ->name('users.index');
 
     //Edit user
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])
+            ->name('users.edit');
 
     //Update user
-    Route::put('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
+    Route::put('/users/{id}/update', [UserController::class, 'update'])
+            ->name('users.update');
 
     //List of all available projects - here is the option to assign/unassign user from a project
-    Route::get('/users/{id}/projects/', [UserController::class, 'users_projects'])->name('users.projects');
+    Route::get('/users/{id}/projects/', [UserController::class, 'usersProjects'])
+            ->name('users.projects');
 
     //Assign-Unassign user from project - POST/DELETE
-    Route::post('/users/{user_id}/projects/{project_id}/assign', [UserController::class, 'users_projects_assign'])->name('users.projects.assign');
+    Route::post('/users/{user_id}/projects/{project_id}/assign', [UserController::class, 'usersProjectsAssign'])
+            ->name('users.projects.assign');
 
-    Route::delete('/users/{user_id}/projects/{project_id}/unassign', [UserController::class, 'users_projects_unassign'])->name('users.projects.unassign');
+    Route::delete('/users/{user_id}/projects/{project_id}/unassign', [UserController::class, 'usersProjectsUnassign'])
+            ->name('users.projects.unassign');
 
 
     //List of all the projects
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects', [ProjectController::class, 'index'])
+            ->name('projects.index');
 
     //Create project
-    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::get('/projects/create', [ProjectController::class, 'create'])
+            ->name('projects.create');
 
     //Store project
-    Route::post('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
+    Route::post('/projects/store', [ProjectController::class, 'store'])
+            ->name('projects.store');
 
 
     //List of all the logs
-    Route::get('/logs', [LogController::class, 'index'])->name('log.index');
+    Route::get('/logs', [LogController::class, 'index'])
+            ->name('log.index');
 
 });
 
     //Project Statistics
-    Route::get('/projects/{id}/', [ProjectController::class, 'show'])->name('projects.show');
+    Route::get('/projects/{id}/', [ProjectController::class, 'show'])
+            ->name('projects.show');
 
     //Users Projects and Logs - self explanatory
-    Route::get('/my-projects', [ProjectController::class, 'my_projects'])->name('projects.myprojects');
+    Route::get('/my-projects', [ProjectController::class, 'myProjects'])
+            ->name('projects.myprojects');
 
-    Route::get('/my-logs', [LogController::class, 'show'])->name('log.mylogs');
+    Route::get('/my-logs', [LogController::class, 'show'])
+            ->name('log.mylogs');
 
 
     //Create a Log Page
-    Route::get('/log/project/{id}', [LogController::class, 'create'])->name('log.create');
+    Route::get('/log/project/{id}', [LogController::class, 'create'])
+            ->name('log.create');
 
-    Route::post('/log/project/{id}/store', [LogController::class, 'store'])->name('log.store');
+    Route::post('/log/project/{id}/store', [LogController::class, 'store'])
+            ->name('log.store');
 

@@ -26,7 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $projects = ProjectUser::whereUserId(auth()->user()->id)->with('project', 'user')->get();
+        $projects = ProjectUser::whereUserId(auth()->user()->id)
+            ->with('project', 'user')
+            ->get();
 
         return view('index', compact('projects'));
     }

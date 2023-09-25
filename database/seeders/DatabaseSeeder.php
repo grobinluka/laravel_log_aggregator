@@ -33,7 +33,16 @@ class DatabaseSeeder extends Seeder
         }
 
         // Default Severity Levels seed
-        $levels = ['Debug', 'Informational', 'Notice', 'Warning', 'Error', 'Critical', 'Alert', 'Emergency'];
+        $levels = [
+                'Debug'
+                ,'Informational'
+                ,'Notice'
+                ,'Warning'
+                ,'Error'
+                ,'Critical'
+                ,'Alert'
+                ,'Emergency'
+            ];
 
         foreach ($levels as $level) {
             if (!SeverityLevel::whereLevel($level)->first()) {

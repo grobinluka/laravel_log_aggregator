@@ -41,7 +41,9 @@ class ProjectController extends Controller
             'description' => 'required|max:1000',
         ]);
 
-        if($project = $request->all()){
+        $project = $request->all();
+
+        if($project){
             Project::create($project);
 
             $projects = Project::all();
@@ -56,7 +58,12 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        if(ProjectUser::whereUserId(auth()->user()->id)->whereProjectId($id)->exists() && ($project = Project::find($id))){
+        $project = Project::find($id);
+        $projectUserCheck = ProjectUser::whereUserId(auth()->user()->id)
+                ->whereProjectId($id)
+                ->exists();
+
+        if($projectUserCheck && $project){
             $hourCounter = 0;
             $hour24Counter = 0;
 
@@ -68,7 +75,11 @@ class ProjectController extends Controller
                 $numOfLogsPerSeverityLevel[$level->level] = 0;
             }
 
-            if($projectsUser = ProjectUser::whereProjectId($project->id)->with('logs.severitylevel')->get()){
+            $projectsUser = ProjectUser::whereProjectId($project->id)
+                ->with('logs.severitylevel')
+                ->get();
+
+            if($projectsUser){
                 foreach($projectsUser as $pu){
                     foreach($pu->logs as $log){
 
@@ -86,7 +97,12 @@ class ProjectController extends Controller
                     }
                 }
                 
-                return view('projects.show', compact('project', 'hourCounter', 'hour24Counter', 'numOfLogsPerSeverityLevel'));
+                return view('projects.show', compact(
+                        'project',
+                        'hourCounter',
+                        'hour24Counter',
+                        'numOfLogsPerSeverityLevel'
+                    ));
             }
         }
 
@@ -98,8 +114,11 @@ class ProjectController extends Controller
     /**
      * Display users projects resource.
      */
-    public function my_projects(){
-        if($user = User::find(auth()->user()->id)){
+    public function myProjects()
+    {
+        $user = User::find(auth()->user()->id);
+
+        if($user){
             $projectsUser = ProjectUser::whereUserId($user->id)->get();
             
             $projectIds = $projectsUser->pluck('project_id')->toArray();
