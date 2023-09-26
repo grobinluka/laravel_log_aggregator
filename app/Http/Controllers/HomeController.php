@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Log;
-use App\Models\User;
 use App\Models\ProjectUser;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {

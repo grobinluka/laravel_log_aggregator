@@ -10,6 +10,7 @@ class Log extends Model
     use HasFactory;
 
     protected $fillable = [
+        'api_key_id',
         'project_user_id',
         'severity_level_id',
         'description',
@@ -21,5 +22,9 @@ class Log extends Model
 
     public function severityLevel(){
         return $this->belongsTo(SeverityLevel::class);
+    }
+
+    public function apiKey(){
+        return $this->belongsTo(ApiKey::class);
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'uuid',
         'name',
         'email',
         'password',
@@ -56,4 +58,22 @@ class User extends Authenticatable
         return $this->role()->whereName($roleName)->exists();
     }
 
+    public function setUuidAttribute(){
+        $this->attributes['uuid'] = $this->getUniqueUUID();
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->uuid = $user->getUniqueUUID();
+        });
+    }
+
+    public function getUniqueUUID(){
+        do{
+            $uuid = Str::uuid();
+        } while (User::where('uuid', $uuid)->exists());
+
+        return $uuid;
+    }
 }

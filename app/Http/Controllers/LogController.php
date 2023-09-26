@@ -61,21 +61,27 @@ class LogController extends Controller
             'description' => 'required|max:1000',
         ]);
 
-        $user_id = User::find(auth()->user()->id)->id;
+        $user = User::find(auth()->user()->id);
         $project = Project::find($project_id);
 
-        if(($project) && ($request) && ($user_id)){
-            $projectuser_id = ProjectUser::whereProjectId($project_id)
-                ->whereUserId($user_id)->first()->id;
+        if(($project) && ($request) && ($user)){
 
-            if($projectuser_id){
+            $projectUserCheck = ProjectUser::whereProjectId($project->id)
+                    ->whereUserId($user->id)
+                    ->exists();
+
+            if($projectUserCheck){
                 $log = $request->all();
+
+                $projectUser_id = ProjectUser::whereProjectId($project->id)
+                        ->whereUserId($user->id)
+                        ->first()->id;
 
                 $severitylevel = SeverityLevel::find($log['severitylevel']);
 
                 if($severitylevel){
                     Log::create([
-                        'project_user_id' => $projectuser_id,
+                        'project_user_id' => $projectUser_id,
                         'severity_level_id' => $severitylevel->id,
                         'description' => $log['description'],
                     ]);
@@ -84,7 +90,8 @@ class LogController extends Controller
                 }
             }
         }
-        return redirect()->back();
+        
+        return redirect()->route('home');
     }
 
     /**
@@ -97,5 +104,55 @@ class LogController extends Controller
             ->get();
 
         return view('logs.my-logs', compact('projectuser'));
+    }
+
+
+    public function apiStore(Request $request){
+
+        $api_key = $request->query('api-key');
+
+        $request->validate([
+            'user_id' => 'required',
+            'project_id' => 'required',
+            'severitylevel' => 'required',
+            'description' => 'required|max:1000',
+        ]);
+
+        $user = User::find($request['user_id']);
+        $project = Project::find($request['project_id']);
+
+        if(($project) && ($request) && ($user)){
+            $projectUserCheck = ProjectUser::whereProjectId($project->id)
+                    ->whereUserId($user->id)
+                    ->exists();
+
+            if($projectUserCheck){
+                $log = $request->all();
+
+                $projectUser_id = ProjectUser::whereProjectId($project->id)
+                        ->whereUserId($user->id)
+                        ->first()->id;
+
+                $severitylevel = SeverityLevel::find($log['severitylevel']);
+
+                if($severitylevel){
+                    Log::create([
+                        'project_user_id' => $projectUser_id,
+                        'severity_level_id' => $severitylevel->id,
+                        'description' => $log['description'],
+                    ]);
+
+                    // return new LogResource($request);
+                    return response()->json([
+                        'success' => 'The log has been successfully published.',
+                        'api-key' => $api_key]);
+                }
+            }
+        }
+
+        return response()->json([
+            'error' => 'The publication of the log was unsuccessful..',
+            'api-key' => $api_key
+        ]);
     }
 }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('api_key_id')->unsigned()->constrained()->onDelete('restrict')->nullable();
             $table->foreignId('project_user_id')->unsigned()->constrained()->onDelete('cascade');
             $table->foreignId('severity_level_id')->unsigned()->constrained()->onDelete('restrict');
             $table->text('description');

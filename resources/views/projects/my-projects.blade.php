@@ -24,6 +24,9 @@
                             <br>
                             <hr>
                             <a href="{{ route('projects.show', $project->id) }}">Stats</a>
+                            <br>
+                            <hr>
+                            <a href="{{ route('projects.apiKeys', $project->id) }}">API Keys</a>
                         </td>
                     </tr>
                 @endforeach

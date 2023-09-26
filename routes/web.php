@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\ProjectController;
 
 /*
@@ -95,4 +96,19 @@ Route::middleware(['admin.role'])->group(function(){
 
     Route::post('/log/project/{id}/store', [LogController::class, 'store'])
             ->name('log.store');
+
+
+
+//API Keys
+
+//User Project API - Keys
+Route::get('/projects/{id}/api-keys', [ApiKeyController::class, 'index'])
+        ->name('projects.apiKeys.index');
+
+Route::post('/projects/{id}/api-keys/store', [ApiKeyController::class, 'store'])
+        ->name('projects.apiKeys.store');
+
+Route::delete('/projects/{id}/api-keys/delete', [ApiKeyController::class, 'destroy'])
+        ->name('projects.apiKeys.destroy');
+
 

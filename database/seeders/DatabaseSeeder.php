@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create an admin user if it doesn't exist
-        if (!User::whereEmail('admin@gmail.com')->first()) {
+        if (!User::whereEmail('admin@gmail.com')->first()){
             User::create([
                 'name' => 'Administrator',
                 'email' => 'admin@gmail.com',
@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
         ProjectUser::factory(50)->create();
 
         // Log Seed
-        Log::factory(1000)->create();
+        // Log::factory(1000)->create();
 
     }
 }

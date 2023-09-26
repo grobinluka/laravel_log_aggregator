@@ -25,4 +25,8 @@ class ProjectUser extends Model
     public function logs(){
         return $this->hasMany(Log::class);
     }
+
+    public function apiKeys(){
+        return $this->hasMany(ApiKey::class);
+    }
 }

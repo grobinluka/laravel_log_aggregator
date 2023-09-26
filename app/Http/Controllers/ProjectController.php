@@ -8,7 +8,6 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use Illuminate\Http\Request;
 use App\Models\SeverityLevel;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -106,9 +105,7 @@ class ProjectController extends Controller
             }
         }
 
-        $project = Project::find($id);
-
-        return redirect()->route('home', compact('project'));
+        return redirect()->route('home');
     }
 
     /**
@@ -127,5 +124,7 @@ class ProjectController extends Controller
 
             return view('projects.my-projects', compact('user','projects'));
         }
+
+        return redirect()->route('home');
     }
 }

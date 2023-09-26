@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Log;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Project;
@@ -34,7 +33,7 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->back();
+        return redirect()->route('home');
     }
 
 
@@ -60,10 +59,9 @@ class UserController extends Controller
 
         if(($user) && ($project)){
             if($this->checkUserProject($user_id, $project_id)){
-                ProjectUser::where([
-                    'project_id' => $project_id,
-                    'user_id' => $user_id
-                ])->delete();
+                ProjectUser::whereProjectId($project->id)
+                    ->whereUserId($user->id)
+                    ->delete();
             }
         }
 
@@ -120,7 +118,7 @@ class UserController extends Controller
             return view('users.edit', compact('user', 'roles'));
         }
 
-        return redirect()->back();
+        return redirect()->route('home');
     }
 
     /**
@@ -146,7 +144,7 @@ class UserController extends Controller
 
         }
 
-        return redirect()->back();
+        return redirect()->route('home');
     }
 
     /**
@@ -154,9 +152,8 @@ class UserController extends Controller
      */
     public function checkUserProject($user_id, $project_id){
 
-        return ProjectUser::where('user_id', '=', $user_id)
-            ->where('project_id', '=', $project_id)
+        return ProjectUser::whereUserId($user_id)
+            ->whereProjectId($project_id)
             ->exists();
-
     }
 }
