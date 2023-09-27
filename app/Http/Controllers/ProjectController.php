@@ -75,6 +75,7 @@ class ProjectController extends Controller
 
             $projectsUser = ProjectUser::whereProjectId($project->id)
                 ->with('logs.severitylevel')
+                ->withTrashed()
                 ->get();
 
             if($projectsUser){
@@ -115,7 +116,9 @@ class ProjectController extends Controller
         $user = User::find(auth()->user()->id);
 
         if($user){
-            $projectsUser = ProjectUser::whereUserId($user->id)->get();
+            $projectsUser = ProjectUser::whereUserId($user->id)
+                            ->whereNull('deleted_at')
+                            ->get();
             
             $projectIds = $projectsUser->pluck('project_id')->toArray();
                 

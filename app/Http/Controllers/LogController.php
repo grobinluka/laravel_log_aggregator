@@ -16,7 +16,16 @@ class LogController extends Controller
      */
     public function index()
     {
-        $projectUser = ProjectUser::with('user', 'project','logs.severityLevel')->get();
+        $projectUser = ProjectUser::with([
+                'user',
+                'project',
+                'logs.severityLevel',
+                'logs.apiKey' => function ($query) {
+                    $query->withTrashed();
+                }
+            ])
+            ->withTrashed()
+            ->get();
 
         return view('logs.index', compact('projectUser'));
     }
@@ -99,59 +108,11 @@ class LogController extends Controller
     {
         $projectUser = ProjectUser::whereUserId(auth()->user()->id)
             ->with('user', 'project','logs.severityLevel')
+            ->withTrashed()
             ->get();
 
         return view('logs.my-logs', compact('projectUser'));
     }
-
-
-    public function apiStore(Request $request){
-
-        $api_key = $request->query('api-key');
-
-        $request->validate([
-            'user_id' => 'required',
-            'project_id' => 'required',
-            'severitylevel' => 'required',
-            'description' => 'required|max:1000',
-        ]);
-
-        $user = User::find($request['user_id']);
-        $project = Project::find($request['project_id']);
-
-        if($project && $request && $user){
-            $projectUserCheck = $projectUserCheck = $this->checkUserProject($user->id, $project->id);
-
-            if($projectUserCheck){
-                $log = $request->all();
-
-                $projectUser_id = ProjectUser::whereProjectId($project->id)
-                        ->whereUserId($user->id)
-                        ->first()->id;
-
-                $severitylevel = SeverityLevel::find($log['severitylevel']);
-
-                if($severitylevel){
-                    Log::create([
-                        'project_user_id' => $projectUser_id,
-                        'severity_level_id' => $severitylevel->id,
-                        'description' => $log['description'],
-                    ]);
-
-                    // return new LogResource($request);
-                    return response()->json([
-                        'success' => 'The log has been successfully published.',
-                        'api-key' => $api_key]);
-                }
-            }
-        }
-
-        return response()->json([
-            'error' => 'The publication of the log was unsuccessful..',
-            'api-key' => $api_key
-        ]);
-    }
-
 
     /**
      * Check if user is assigned to a project

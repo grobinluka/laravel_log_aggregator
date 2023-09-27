@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Controllers\LogController;
-use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LogApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-//API Route to insert Log
-Route::post('logs', [LogController::class, 'apiStore'])->name('api.logs.store');
+//API Route to store log
+Route::post('logs', [LogApiController::class, 'store'])->name('logs.api.store');
+
+Route::get('severitylevels', [LogApiController::class, 'severityLevels'])->name('logs.api.severitylevels');

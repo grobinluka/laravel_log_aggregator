@@ -108,12 +108,13 @@ class ApiKeyController extends Controller
     public function indexApiByAdmin($project_id, $user_id)
     {
 
-        $projectUserCheck = $this->checkUserProject($user_id, $project_id);
+        $projectUserCheck = $this->checkUserProjectForAdmin($user_id, $project_id);
 
         if($projectUserCheck){
 
             $projectUser = ProjectUser::whereUserId($user_id)
                 ->whereProjectId($project_id)
+                ->withTrashed()
                 ->first();
 
             $apiKeys = ApiKey::whereProjectUserId($projectUser->id)->get();
@@ -171,7 +172,10 @@ class ApiKeyController extends Controller
 
                 $project = Project::find($project_id);
 
-                return redirect()->route('projects.users.apiKeys.index', ['project_id' => $project->id, 'user_id' => $user->id]);       
+                return redirect()->route('projects.users.apiKeys.index', [
+                        'project_id' => $project->id,
+                        'user_id' => $user->id
+                    ]);       
     
             } 
         }
@@ -219,6 +223,27 @@ class ApiKeyController extends Controller
 
         $projectUser = ProjectUser::whereUserId($user_id)
             ->whereProjectId($project_id)
+            ->exists();
+
+        if($project && $user && $projectUser){
+            return true;
+        }
+
+        return false;
+    }
+
+        /**
+     * Check if user is assigned to a project
+     */
+    public function checkUserProjectForAdmin($user_id, $project_id){
+
+        $project = Project::find($project_id);
+
+        $user = User::find($user_id);
+
+        $projectUser = ProjectUser::whereUserId($user_id)
+            ->whereProjectId($project_id)
+            ->withTrashed()
             ->exists();
 
         if($project && $user && $projectUser){

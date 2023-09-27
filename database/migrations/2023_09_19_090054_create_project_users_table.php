@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('project_id')->unsigned()->constrained()->onDelete('restrict');
             $table->foreignId('user_id')->unsigned()->constrained()->onDelete('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

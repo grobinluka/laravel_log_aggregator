@@ -6,7 +6,7 @@
             <div>
                 <h3 class="mb-0 text-gray-800">Project: {{ $project->title . ' | ' . $project->slug }}</h3>
                 <hr>
-                <h5 class="mb-0 text-gray-800">User: {{$user->name}}</h5>
+                <h5 class="mb-0 text-gray-800">User: <a href="{{route('users.projects', $user->id)}}">{{$user->name}}</a></h5>
             </div>
             <div>
                 <a href="#" class="btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#storeModal"><i

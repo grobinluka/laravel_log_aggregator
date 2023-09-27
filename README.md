@@ -8,6 +8,7 @@ To get your Laravel project up and running after cloning it from a Git repositor
 - Composer
 - NodeJS
 - XAMPP or any other software that can host MySQL database
+- Postman
 
 ## 1. Clone the Git Repository
 
@@ -111,6 +112,16 @@ Email: admin@gmail.com
 Password: 123123123
 ```
 After logging in as the administrator, please create a new standard user account and then proceed to test the application using that newly created account.
+
+## 9. Test API
+
+I've included Postman's Collection for API testing, which you can import into your collections in Postman.
+
+The API is configured to insert/create a log. To do this, you'll need your UUID, which you can find in the app, and an API Key that you can create within the application itself.
+
+For more detailed information, please refer to the documentation provided with the Postman API Collection.
+
+The files are included in Postman folder.
 
 
 ## Special Thanks To

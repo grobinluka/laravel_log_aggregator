@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProjectUser extends Model
 {
     use HasFactory;
+
+    use SoftDeletes;
+    protected $date = ['deleted_at'];
 
     protected $fillable = [
         'project_id',

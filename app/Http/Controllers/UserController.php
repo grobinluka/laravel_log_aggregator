@@ -23,13 +23,14 @@ class UserController extends Controller
     }
 
 
-    public function usersProjects($id){
+    public function usersProjects($id)
+    {
         $user = User::find($id);
 
-        if($user){
+        if ($user) {
             $projects = Project::all();
 
-            if($projects){
+            if ($projects) {
                 return view('users.project-user', compact('user', 'projects'));
             }
         }
@@ -38,12 +39,21 @@ class UserController extends Controller
     }
 
 
-    public function usersProjectsAssign($user_id, $project_id){
+    public function usersProjectsAssign($user_id, $project_id)
+    {
         $user = User::find($user_id);
         $project = Project::find($project_id);
 
-        if($user && $project){
-            if(!$this->checkUserProject($user->id, $project->id)){
+        if ($user && $project) {
+            $projectUser = ProjectUser::whereUserId($user->id)
+                ->whereProjectId($project->id)
+                ->whereNotNull('deleted_at')
+                ->withTrashed()
+                ->first();
+
+            if ($projectUser) {
+                $projectUser->restore();
+            } elseif (!$this->checkUserProject($user->id, $project->id)) {
                 ProjectUser::create([
                     'project_id' => $project_id,
                     'user_id' => $user_id
@@ -54,12 +64,13 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function usersProjectsUnassign($user_id, $project_id){
+    public function usersProjectsUnassign($user_id, $project_id)
+    {
         $user = User::find($user_id);
         $project = Project::find($project_id);
 
-        if($user && $project){
-            if($this->checkUserProject($user->id, $project->id)){
+        if ($user && $project) {
+            if ($this->checkUserProject($user->id, $project->id)) {
                 $projectUser = ProjectUser::whereProjectId($project->id)
                     ->whereUserId($user->id)->first();
 
@@ -95,7 +106,7 @@ class UserController extends Controller
 
         $userCheck = User::whereEmail($user['email'])->first();
 
-        if(!$userCheck){
+        if (!$userCheck) {
             User::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
@@ -116,9 +127,9 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if($user){
+        if ($user) {
             $roles = Role::all();
-        
+
             return view('users.edit', compact('user', 'roles'));
         }
 
@@ -138,14 +149,13 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        if($user){
+        if ($user) {
 
             $user->update($request->all());
 
             $users = User::all();
 
             return view('users.users', compact('users'));
-
         }
 
         return redirect()->route('home');
@@ -154,7 +164,8 @@ class UserController extends Controller
     /**
      * Check if user is assigned to a project
      */
-    public function checkUserProject($user_id, $project_id){
+    public function checkUserProject($user_id, $project_id)
+    {
 
         $project = Project::find($project_id);
 
@@ -164,7 +175,7 @@ class UserController extends Controller
             ->whereProjectId($project_id)
             ->exists();
 
-        if($project && $user && $projectUser){
+        if ($project && $user && $projectUser) {
             return true;
         }
 

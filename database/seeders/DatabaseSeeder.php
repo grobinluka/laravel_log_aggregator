@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Log;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\ApiKey;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use Illuminate\Support\Str;
@@ -64,17 +65,6 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        if (!User::whereEmail('tester@gmail.com')->first()){
-            User::create([
-                'name' => 'Tester User',
-                'email' => 'tester@gmail.com',
-                'email_verified_at' => now(),
-                'password' => '$2y$10$uyZo6QNstLlQeDJ.S2oEuue/eYSI8Wr/SE2DeQoNgudvJNhRCm7O6',
-                'role_id' => 2,
-                'remember_token' => Str::random(10),
-            ]);
-        }
-
         // User SEED - role: employee
         User::factory(10)->state(new Sequence(
             fn(Sequence $sequence) => [
@@ -86,10 +76,13 @@ class DatabaseSeeder extends Seeder
         Project::factory(10)->create();
 
         // ProjectUser Seed
-        ProjectUser::factory(50)->create();
+        ProjectUser::factory(30)->create();
+
+        //ApiKey Seed
+        ApiKey::factory(100)->create();
 
         // Log Seed
-        // Log::factory(1000)->create();
+        Log::factory(1000)->create();
 
     }
 }

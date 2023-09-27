@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "2d475466-abf7-44a2-aadb-197718d074f1",
+		"name": "Log API",
+		"description": "This API is exclusively accessible to registered users of the SysLog Web App who have been assigned a project and have created an API key specifically for their designated project.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23637745"
+	},
+	"item": [
+		{
+			"name": "Create Log",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"uuid\": \"<UUID>\",\r\n\t\"severitylevel\": \"Error\",\r\n\t\"description\": \"Lorem ipsum dolor sit amet consectetur adipiscing elit praesent ac id tortor condimentum, platea mus a tristique nisi vehicula fusce sagittis litora elementum lacus sapien vulputate.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/logs?api-key=<API-KEY>",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"logs"
+					],
+					"query": [
+						{
+							"key": "api-key",
+							"value": "<API-KEY>"
+						}
+					]
+				},
+				"description": "To make a successful POST request, you'll always need to include an API key variable either in the URL or in JSON format.\n\nTo locate the API key for your project, navigate to \"My Projects\" > \"API Keys\" or \"My Projects\" > \"Stats\" > \"API Keys.\" There, you can view, delete, and add API keys for your selected project.\n\nTo correctly set up your API key, enter the API in URL after =, like so:\n\n{{localhost}}/logs?api-key=457e2c8f90aefe89d842afc2999b2fdef47f5bd90473f96354a10ebb65c40d7c\n\nYou can modify the 'localhost' variable by assigning it the desired value you need.\n\nTo effectively request this API, you should use the following JSON structure (dummy data):\n\n``` json\n{\n  \"uuid\": \"27638108-51eb-4f32-b6fa-0bbe58ec0581\",\n  \"severitylevel\": \"Notice\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ac id tortor condimentum, platea mus a tristique nisi vehicula. Fusce sagittis litora elementum lacus, sapien vulputate, montes pulvinar cursus venenatis. Potenti varius ultricies torquent volutpat suscipit eleifend. Luctus quisque hac egestas dictumst, purus natoque sociosqu interdum augue, et enim mattis.\"\n}\n\n ```\n\nYou can find the UUID in the web application under \"My Projects\" > \"API Keys\" or \"My Projects\" > \"Stats\" > \"API Keys\" under \"Generate API Key\" button. Please refrain from sharing your UUID as it is unique to each user.\n\nTo determine the severity level of the log you wish to post, you can retrieve severity levels by running a GET request for Severity Level. This request will return severity level names, which you should use to specify the severity level for the log in string format, such as:\n\n- \"severitylevel\": \"Notice\"\n- \"severitylevel\": \"Error\"\n    \n\nThe 'description' field should contain content that describes the nature of the log, whether it's a problem, error, information, and so on."
+			},
+			"response": []
+		},
+		{
+			"name": "Severity Levels",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/severitylevels",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"severitylevels"
+					]
+				},
+				"description": "This will provide you with a list of available severity level names that should be used when making a POST request to create a log."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localhost",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		}
+	]
+}

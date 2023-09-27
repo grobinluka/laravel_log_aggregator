@@ -6,11 +6,10 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Severity Level</th>
-                    <th>Title</th>
-                    <th>Slug</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Create At</th>
+                    <th>Project Title</th>
+                    <th>Project Slug</th>
+                    <th>Log Description</th>
+                    <th>Log Created At</th>
                     <th>Options</th>
                 </tr>
             </thead>
@@ -19,9 +18,8 @@
                     @foreach ($pu->logs as $log)
                         <tr>
                             <td>{{ $log->severityLevel->level }}</td>
-                            <td>{{ $pu->project->title }}</td>
-                            <td>{{ $pu->project->slug }}</td>
-                            <td>{{ $pu->user->name }}</td>
+                            <td><a href="{{route('projects.show', $pu->project->id)}}">{{ $pu->project->title }}</a></td>
+                            <td><a href="{{route('projects.show', $pu->project->id)}}">{{ $pu->project->slug }}</a></td>
                             <td>{{ $log->description }}</td>
                             <td>{{ $log->created_at->toDateTimeString() }}</td>
                             <td></td>
