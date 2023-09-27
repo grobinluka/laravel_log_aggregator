@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($projectuser as $pu)
+                @foreach ($projectUser as $pu)
                     @foreach ($pu->logs as $log)
                         <tr>
                             <td>{{ $log->severityLevel->level }}</td>

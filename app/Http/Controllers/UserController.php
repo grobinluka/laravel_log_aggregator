@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\ApiKey;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use Illuminate\Http\Request;
@@ -41,8 +42,8 @@ class UserController extends Controller
         $user = User::find($user_id);
         $project = Project::find($project_id);
 
-        if(($user) && ($project)){
-            if(!$this->checkUserProject($user_id, $project_id)){
+        if($user && $project){
+            if(!$this->checkUserProject($user->id, $project->id)){
                 ProjectUser::create([
                     'project_id' => $project_id,
                     'user_id' => $user_id
@@ -57,11 +58,14 @@ class UserController extends Controller
         $user = User::find($user_id);
         $project = Project::find($project_id);
 
-        if(($user) && ($project)){
-            if($this->checkUserProject($user_id, $project_id)){
-                ProjectUser::whereProjectId($project->id)
-                    ->whereUserId($user->id)
-                    ->delete();
+        if($user && $project){
+            if($this->checkUserProject($user->id, $project->id)){
+                $projectUser = ProjectUser::whereProjectId($project->id)
+                    ->whereUserId($user->id)->first();
+
+                ApiKey::whereProjectUserId($projectUser->id)->delete();
+
+                $projectUser->delete();
             }
         }
 
@@ -152,8 +156,18 @@ class UserController extends Controller
      */
     public function checkUserProject($user_id, $project_id){
 
-        return ProjectUser::whereUserId($user_id)
+        $project = Project::find($project_id);
+
+        $user = User::find($user_id);
+
+        $projectUser = ProjectUser::whereUserId($user_id)
             ->whereProjectId($project_id)
             ->exists();
+
+        if($project && $user && $projectUser){
+            return true;
+        }
+
+        return false;
     }
 }

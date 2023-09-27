@@ -55,14 +55,11 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($project_id)
     {
-        $project = Project::find($id);
-        $projectUserCheck = ProjectUser::whereUserId(auth()->user()->id)
-                ->whereProjectId($id)
-                ->exists();
+        $projectUserCheck = $this->checkUserProject(auth()->user()->id, $project_id);
 
-        if($projectUserCheck && $project){
+        if($projectUserCheck){
             $hourCounter = 0;
             $hour24Counter = 0;
 
@@ -73,6 +70,8 @@ class ProjectController extends Controller
             foreach($severityLevels as $level){
                 $numOfLogsPerSeverityLevel[$level->level] = 0;
             }
+
+            $project = Project::find($project_id);
 
             $projectsUser = ProjectUser::whereProjectId($project->id)
                 ->with('logs.severitylevel')
@@ -126,5 +125,25 @@ class ProjectController extends Controller
         }
 
         return redirect()->route('home');
+    }
+
+    /**
+     * Check if user is assigned to a project
+     */
+    public function checkUserProject($user_id, $project_id){
+
+        $project = Project::find($project_id);
+
+        $user = User::find($user_id);
+
+        $projectUser = ProjectUser::whereUserId($user_id)
+            ->whereProjectId($project_id)
+            ->exists();
+
+        if($project && $user && $projectUser){
+            return true;
+        }
+
+        return false;
     }
 }

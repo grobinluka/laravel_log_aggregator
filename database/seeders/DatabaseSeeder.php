@@ -64,6 +64,17 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        if (!User::whereEmail('tester@gmail.com')->first()){
+            User::create([
+                'name' => 'Tester User',
+                'email' => 'tester@gmail.com',
+                'email_verified_at' => now(),
+                'password' => '$2y$10$uyZo6QNstLlQeDJ.S2oEuue/eYSI8Wr/SE2DeQoNgudvJNhRCm7O6',
+                'role_id' => 2,
+                'remember_token' => Str::random(10),
+            ]);
+        }
+
         // User SEED - role: employee
         User::factory(10)->state(new Sequence(
             fn(Sequence $sequence) => [

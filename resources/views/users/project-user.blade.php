@@ -36,8 +36,10 @@
                                     <input class="btn btn-danger" type="submit" name="submit" value="Unassign"
                                         onclick="return confirm('Are you sure you want to unassign?')">
                                 </form>
+                                <br>
+                                <hr>
+                                <a href="{{route('projects.users.apiKeys.index', ['project_id' => $project->id, 'user_id' => $user->id])}}">API Keys</a>
                             @endif
-
                         </td>
                     </tr>
                 @endforeach

@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('api_key');
-            $table->foreignId('project_user_id')->unsigned()->constrained()->onDelete('cascade');
+            $table->foreignId('project_user_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

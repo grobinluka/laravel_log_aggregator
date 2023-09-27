@@ -16,9 +16,9 @@ class LogController extends Controller
      */
     public function index()
     {
-        $projectuser = ProjectUser::with('user', 'project','logs.severityLevel')->get();
+        $projectUser = ProjectUser::with('user', 'project','logs.severityLevel')->get();
 
-        return view('logs.index', compact('projectuser'));
+        return view('logs.index', compact('projectUser'));
     }
 
     /**
@@ -29,7 +29,7 @@ class LogController extends Controller
         $project = Project::find($project_id);
 
         if($project){
-            $projectUser = ProjectUser::whereProjectId($project_id)->get();
+            $projectUser = ProjectUser::whereProjectId($project->id)->get();
 
             $check = false;
 
@@ -64,11 +64,9 @@ class LogController extends Controller
         $user = User::find(auth()->user()->id);
         $project = Project::find($project_id);
 
-        if(($project) && ($request) && ($user)){
+        if($project && $request && $user){
 
-            $projectUserCheck = ProjectUser::whereProjectId($project->id)
-                    ->whereUserId($user->id)
-                    ->exists();
+            $projectUserCheck = $this->checkUserProject($user->id, $project->id);
 
             if($projectUserCheck){
                 $log = $request->all();
@@ -99,11 +97,11 @@ class LogController extends Controller
      */
     public function show()
     {
-        $projectuser = ProjectUser::whereUserId(auth()->user()->id)
+        $projectUser = ProjectUser::whereUserId(auth()->user()->id)
             ->with('user', 'project','logs.severityLevel')
             ->get();
 
-        return view('logs.my-logs', compact('projectuser'));
+        return view('logs.my-logs', compact('projectUser'));
     }
 
 
@@ -121,10 +119,8 @@ class LogController extends Controller
         $user = User::find($request['user_id']);
         $project = Project::find($request['project_id']);
 
-        if(($project) && ($request) && ($user)){
-            $projectUserCheck = ProjectUser::whereProjectId($project->id)
-                    ->whereUserId($user->id)
-                    ->exists();
+        if($project && $request && $user){
+            $projectUserCheck = $projectUserCheck = $this->checkUserProject($user->id, $project->id);
 
             if($projectUserCheck){
                 $log = $request->all();
@@ -154,5 +150,26 @@ class LogController extends Controller
             'error' => 'The publication of the log was unsuccessful..',
             'api-key' => $api_key
         ]);
+    }
+
+
+    /**
+     * Check if user is assigned to a project
+     */
+    public function checkUserProject($user_id, $project_id){
+
+        $project = Project::find($project_id);
+
+        $user = User::find($user_id);
+
+        $projectUser = ProjectUser::whereUserId($user_id)
+            ->whereProjectId($project_id)
+            ->exists();
+
+        if($project && $user && $projectUser){
+            return true;
+        }
+
+        return false;
     }
 }

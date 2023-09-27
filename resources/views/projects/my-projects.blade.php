@@ -7,7 +7,6 @@
                 <tr>
                     <th>Title</th>
                     <th>Slug</th>
-                    <th>Name</th>
                     <th>Description</th>
                     <th>Options</th>
                 </tr>
@@ -17,7 +16,6 @@
                     <tr>
                         <td>{{ $project->title }}</td>
                         <td>{{ $project->slug }}</td>
-                        <td>{{ $user->name }}</td>
                         <td>{{ substr($project->description, 0, 100) }}</td>
                         <td>
                             <a href="{{ route('log.create', $project->id) }}">Log a Report</a>
@@ -26,7 +24,7 @@
                             <a href="{{ route('projects.show', $project->id) }}">Stats</a>
                             <br>
                             <hr>
-                            <a href="{{ route('projects.apiKeys', $project->id) }}">API Keys</a>
+                            <a href="{{ route('projects.apiKeys.index', $project->id) }}">API Keys</a>
                         </td>
                     </tr>
                 @endforeach
